@@ -83,6 +83,22 @@ fn main() -> anyhow::Result<()> {
         engine.register(Arc::new(kspike_modules::strikers::TracebackBeaconStriker::default()))?;
     }
 
+    // MSF-mirror modules — kernel-native, built-in.
+    use kspike_modules::msf_mirror as msf;
+    use kspike_kernel::canary::MemoryCanary;
+    let canary_reg = Arc::new(MemoryCanary::new());
+    engine.register(Arc::new(msf::EternalBlueProbeDetector::default()))?;
+    engine.register(Arc::new(msf::SmbV1Killswitch::default()))?;
+    engine.register(Arc::new(msf::PsExecAbuseDetector::default()))?;
+    engine.register(Arc::new(msf::Log4ShellJndiDetector::default()))?;
+    engine.register(Arc::new(msf::CredDumpCanaryDefender::new(canary_reg.clone())))?;
+    engine.register(Arc::new(msf::ShikataPolymorphicDetector::default()))?;
+    engine.register(Arc::new(msf::MeterpreterBeaconDetector::default()))?;
+    engine.register(Arc::new(msf::KerberoastDetector::default()))?;
+    engine.register(Arc::new(msf::CanaryTokenDeception::new(canary_reg.clone())))?;
+    #[cfg(feature = "strikers")]
+    engine.register(Arc::new(msf::MeterpreterSinkholeStriker::default()))?;
+
     match cli.cmd {
         Cmd::Demo     => demo(&engine),
         Cmd::Ingest   => ingest_stdin(&engine),

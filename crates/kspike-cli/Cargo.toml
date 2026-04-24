@@ -16,6 +16,7 @@ strikers = []
 
 [dependencies]
 kspike-core    = { path = "../kspike-core" }
+kspike-kernel  = { path = "../kspike-kernel" }
 kspike-judge   = { path = "../kspike-judge" }
 kspike-modules = { path = "../kspike-modules", features = ["all"] }
 clap               = { workspace = true }

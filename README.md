@@ -124,7 +124,9 @@ echo '{"id":"...","ts":"2026-04-24T21:18:00Z","source":"AuthLog",
 
 ---
 
-## Module library (v0.1)
+## Module library
+
+### Core modules (v0.1)
 
 | kind | name | risk | purpose |
 |---|---|---|---|
@@ -134,6 +136,28 @@ echo '{"id":"...","ts":"2026-04-24T21:18:00Z","source":"AuthLog",
 | defender | `defender.fs_immunity` | 1 | Enables `fs.protect_*` sysctls to preserve evidence. |
 | striker | `striker.c2_burn` | 7 | Null-routes and DNS-sinks a confirmed C2. |
 | striker | `striker.traceback_beacon` | 8 | Plants a canary beacon to expose exfil path. |
+
+### MSF-Mirror modules (v0.2) — kernel-native, compiled-in
+
+Famous Metasploit offensive modules, inverted and wired directly into the
+engine via the `kspike-kernel` substrate.
+
+| kind | name | MSF original | purpose |
+|---|---|---|---|
+| detector | `detector.smb.eternalblue_probe`  | `exploit/windows/smb/ms17_010_eternalblue` | NT_TRANS probe shape on the wire. |
+| defender | `defender.smb.v1_killswitch`      | — | Kills SMBv1 + blackholes 445 from the flagged actor. |
+| detector | `detector.smb.psexec_abuse`       | `exploit/windows/smb/psexec` | ADMIN$ mount + svcctl bind + CreateService correlation. |
+| detector | `detector.http.log4shell_jndi`    | `exploit/multi/http/log4shell_*` | JNDI strings (CVE-2021-44228) incl. obfuscated. |
+| defender | `defender.cred.dump_canary`       | `post/windows/gather/hashdump` | Plants fake credentials + flags anyone using them. |
+| detector | `detector.mem.shikata_polymorphic`| `x86/shikata_ga_nai` | Classic SGN decoder-stub prologue (two variants). |
+| detector | `detector.net.meterpreter_beacon` | `windows/meterpreter/reverse_*` | Stageless/staged Meterpreter C2 shape. |
+| striker  | `striker.net.meterpreter_sinkhole`| — | DNATs confirmed Meterpreter flows into a local honeypot. |
+| detector | `detector.ad.kerberoasting`       | `GetUserSPNs / Rubeus` | Multi-SPN TGS-REQ bursts with RC4 etype. |
+| deception| `deception.canary_token`          | — | DNS/URL/file tripwires; any touch implies recon. |
+
+**Kernel substrate** (`kspike-kernel`): packet view, byte/hex/utf16 inspection,
+canary registry, procfs/sysfs taps. No plugin boundary — these are part of the
+engine.
 
 Module authors implement a single trait (`kspike_core::Module`), declare their
 known limits (`KnownLimits`), and emit verdicts. Strikers `apply` MUST refuse

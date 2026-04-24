@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "crates/kspike-core",
     "crates/kspike-khz",
+    "crates/kspike-kernel",
     "crates/kspike-judge",
     "crates/kspike-modules",
     "crates/kspike-cli",

@@ -114,6 +114,11 @@ impl Engine {
                 continue;
             }
 
+            if matches!(verdict, ModuleVerdict::Ignore) {
+                // Ignore verdicts are free — no apply(), no ledger noise beyond verdict.
+                continue;
+            }
+
             if self.cfg.dry_run {
                 info!("[DRY-RUN] would apply: {} :: {:?}", meta.name, verdict);
                 continue;
