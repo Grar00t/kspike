@@ -1,0 +1,14 @@
+[package]
+name        = "kspike-honeypot"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "KSpike honeypot profiles + mock responders for sinkhole strikes"
+
+[dependencies]
+kspike-core = { path = "../kspike-core" }
+serde       = { workspace = true }
+serde_json  = { workspace = true }
+anyhow      = { workspace = true }
+tracing     = { workspace = true }

@@ -30,6 +30,36 @@ Part of the [gratech.sa](https://gratech.sa) sovereign stack.
 
 ---
 
+## What's new in v0.4 — Daemon + TUI + Casper + Honeypot + K-Forge
+
+- **kspike-daemon** (`kspiked`) — long-running engine over a UNIX socket;
+  shared `Arc<Engine>` so every tap (XDP, Casper, honey) ingests into the
+  same state. Ships with a full systemd hardening unit.
+- **kspike-tui** — interactive `kspike>` console, msfconsole-style.
+- **kspike-honeypot** — profile schema + built-ins (meterpreter_win10_x64,
+  ssh_ubuntu_2004, smb_win7). Charter-bound `forbidden_leaks` list.
+- **kspike-casper-ffi** — `CasperJudge` delegates final adjudication to the
+  Casper Engine (C11) over a minimal dlopen'd ABI. Composable: Casper can
+  only *tighten* the inner ROE, never loosen.
+- **kspike-kforge** — P2P gossip skeleton (Advert / FetchReq / Segment)
+  for community ledger replication under signed peers.
+- **docs/ops/BUILDING-BPF.md** — complete bpf-linker + CAP_BPF recipe.
+
+```bash
+# Daemon
+cargo run --release -p kspike-daemon -- --socket /tmp/kspike.sock --phi 0.35
+
+# In another terminal:
+cargo run --release -p kspike-tui -- --socket /tmp/kspike.sock
+kspike> status
+kspike> modules
+kspike> tail 10
+```
+
+See [ROADMAP.md](./ROADMAP.md) for the full plan through v1.0.
+
+---
+
 ## What's new in v0.3 — Kernel-Native MITM
 
 KSpike now ships a **transparent XDP + eBPF interceptor** (`kspike-xdp-burp`)

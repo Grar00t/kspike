@@ -1,0 +1,28 @@
+[package]
+name        = "kspike-tui"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "Interactive kspike> console (msfconsole-style) — talks to kspiked over UNIX socket"
+
+[[bin]]
+name = "kspike-tui"
+path = "src/main.rs"
+
+[dependencies]
+kspike-core    = { path = "../kspike-core" }
+kspike-daemon  = { path = "../kspike-daemon" }
+kspike-modules = { path = "../kspike-modules", features = ["all"] }
+
+anyhow     = { workspace = true }
+clap       = { workspace = true }
+tracing    = { workspace = true }
+tracing-subscriber = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+chrono     = { workspace = true }
+
+[dependencies.tokio]
+version  = "1"
+features = ["rt-multi-thread", "macros", "io-std", "io-util", "net"]

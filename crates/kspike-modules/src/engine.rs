@@ -29,7 +29,7 @@ pub struct Engine {
     stats: RwLock<EngineStats>,
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, serde::Serialize, serde::Deserialize)]
 pub struct EngineStats {
     pub signals: u64,
     pub defenses: u64,

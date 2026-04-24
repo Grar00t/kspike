@@ -1,0 +1,33 @@
+[package]
+name        = "kspike-daemon"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "KSpike long-running daemon — shared Arc<Engine>, UNIX-socket control IPC"
+
+[[bin]]
+name = "kspiked"
+path = "src/main.rs"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+kspike-core    = { path = "../kspike-core" }
+kspike-kernel  = { path = "../kspike-kernel" }
+kspike-judge   = { path = "../kspike-judge" }
+kspike-modules = { path = "../kspike-modules", features = ["all"] }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+anyhow     = { workspace = true }
+thiserror  = { workspace = true }
+tracing    = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap       = { workspace = true }
+chrono     = { workspace = true }
+
+[dependencies.tokio]
+version  = "1"
+features = ["rt-multi-thread", "macros", "signal", "sync", "time", "io-util", "net"]

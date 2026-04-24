@@ -1,0 +1,27 @@
+[package]
+name        = "kspike-casper-ffi"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "FFI bridge to the Casper Engine (C11) — provides CasperJudge"
+
+[dependencies]
+kspike-core  = { path = "../kspike-core" }
+kspike-khz   = { path = "../kspike-khz" }
+kspike-judge = { path = "../kspike-judge" }
+serde        = { workspace = true }
+serde_json   = { workspace = true }
+anyhow       = { workspace = true }
+thiserror    = { workspace = true }
+tracing      = { workspace = true }
+chrono       = { workspace = true }
+libc         = "0.2"
+
+[features]
+default = []
+# When the Casper Engine .so is present, link against it; otherwise fall back
+# to the stub judge that returns `unknown` — composable under StaticJudge.
+link_casper = []
+
+[build-dependencies]

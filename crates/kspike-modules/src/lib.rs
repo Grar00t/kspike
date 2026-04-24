@@ -9,3 +9,4 @@ pub mod strikers;
 pub mod msf_mirror;
 
 pub use engine::{Engine, EngineConfig, EngineStats};
+pub use kspike_core::Module;

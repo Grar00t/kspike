@@ -7,6 +7,11 @@ members = [
     "crates/kspike-judge",
     "crates/kspike-modules",
     "crates/kspike-xdp-burp",
+    "crates/kspike-honeypot",
+    "crates/kspike-casper-ffi",
+    "crates/kspike-kforge",
+    "crates/kspike-daemon",
+    "crates/kspike-tui",
     "crates/kspike-cli",
 ]
 # The eBPF sub-crate under kspike-xdp-burp/bpf is built with a DIFFERENT
