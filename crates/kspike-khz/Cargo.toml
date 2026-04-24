@@ -1,0 +1,15 @@
+[package]
+name        = "kspike-khz"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "KHZ_Q — Khawarizmi-Fitrah balancing engine for ethical decision scoring"
+
+[dependencies]
+kspike-core = { path = "../kspike-core" }
+serde       = { workspace = true }
+serde_json  = { workspace = true }
+anyhow      = { workspace = true }
+thiserror   = { workspace = true }
+tracing     = { workspace = true }

@@ -1,0 +1,53 @@
+Casper-Sovereign License 1.0
+=============================
+
+Copyright (c) 2026 Sulaiman Al-Shammari and GRA Tech Solutions.
+
+Permission is hereby granted, free of charge, to any person or organisation
+obtaining a copy of this software and associated documentation (the
+"Software"), to use, copy, modify, merge, publish, and distribute the
+Software, subject to the following conditions.
+
+1. PRESERVATION OF PURPOSE
+   The Software exists to protect human beings — especially the wronged
+   (المظلومين) — from harm. No use of the Software may:
+     (a) deceive users about what the Software does on their behalf;
+     (b) be deployed as spyware, bossware, or any tool whose primary
+         purpose is to surveil a user without that user's consent;
+     (c) be used to suppress lawful speech or peaceful dissent;
+     (d) be used to deny a user access to their own data, lawfully held.
+
+2. PRESERVATION OF THE JUDGE
+   The Judge layer (kspike-judge) and the KHZ_Q balancer (kspike-khz) are
+   structural safeguards. A derivative work may extend them; it may NOT
+   remove, weaken, or bypass them while still calling itself "KSpike" or
+   any reasonably similar name.
+
+3. HONESTY OF LIMITATIONS
+   The epistemic humility layer (`kspike_core::humility`) must be preserved
+   in any derivative. Derivatives may add limits; they may not conceal
+   them. Claims of "perfect" or "flawless" operation are forbidden.
+
+4. EVIDENCE LEDGER INTEGRITY
+   The evidence ledger (append-only, hash-chained, signed) may be extended
+   with richer formats but may not be disabled by default, rendered
+   unverifiable, or used to create plausibly-deniable "silent" execution
+   paths.
+
+5. ATTRIBUTION
+   The above copyright notice, this license, and the principles in §1–§4
+   shall be included in all copies or substantial portions of the Software.
+
+6. DISCLAIMER
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. THE AUTHORS ARE
+   NOT LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE
+   USE OF THE SOFTWARE.
+
+7. CONFLICT WITH LOCAL LAW
+   Where any clause in this license conflicts with the mandatory law of the
+   jurisdiction in which the Software is used, that clause is severable.
+   The rest remains in force.
+
+— وفوق كل ذي علم عليم —

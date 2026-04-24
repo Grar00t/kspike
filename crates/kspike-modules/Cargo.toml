@@ -1,0 +1,23 @@
+[package]
+name        = "kspike-modules"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "KSpike module library: defenders, strikers, detectors, deceptions"
+
+[dependencies]
+kspike-core  = { path = "../kspike-core" }
+kspike-judge = { path = "../kspike-judge" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+
+[features]
+default = ["defenders", "detectors"]
+defenders = []
+detectors = []
+strikers  = []   # locked behind judge; must be explicitly enabled
+all       = ["defenders", "detectors", "strikers"]

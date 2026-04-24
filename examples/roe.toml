@@ -1,0 +1,35 @@
+# KSpike Rules of Engagement — example config
+#
+# Copy to ./roe.toml and edit. The framework reads this at startup.
+# Every edit you make to this file SHOULD be committed to a K-Forge repo
+# so its history is as auditable as the framework's own evidence ledger.
+
+version  = "0.1"
+operator = "sulaiman@gratech.sa"
+
+# posture: passive_observer | defensive_only | defensive_with_active_response | preemptive
+posture  = "defensive_with_active_response"
+
+[strike]
+min_attack_certainty         = 0.85
+min_defender_attempts        = 1
+min_target_legitimacy        = 0.90
+max_proportionality          = 5
+require_external_corroboration = false
+
+# Hard-deny list. Glob prefix '*' supported. Operator may extend, not remove.
+forbidden_targets = [
+    "127.0.0.0/8",
+    "169.254.0.0/16",
+    "224.0.0.0/4",
+    "*.gov.sa",
+    "*.gov",
+    "*.mil",
+    "*.edu",
+    "*.hospital",
+    "*.icrc.org",
+]
+
+# Strikers whose risk_level exceeds this threshold require a second, manual
+# authorization keystroke from the operator.
+require_dual_authorization_above = 7

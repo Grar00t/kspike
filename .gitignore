@@ -1,0 +1,8 @@
+target/
+Cargo.lock
+*.swp
+.DS_Store
+kspike-evidence.jsonl
+*.log
+.idea/
+.vscode/

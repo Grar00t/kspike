@@ -1,0 +1,11 @@
+{
+  "id": "aa0ce010-1111-2222-3333-444455556666",
+  "ts": "2026-04-24T21:18:00Z",
+  "source": "AuthLog",
+  "kind": "ssh.auth.fail.burst",
+  "actor": "198.51.100.99",
+  "target": "sshd",
+  "threat": "Hostile",
+  "raw_confidence": 0.95,
+  "data": { "attempts": 30, "window_seconds": 60 }
+}
