@@ -39,7 +39,17 @@ impl Default for Log4ShellJndiDetector {
 impl Module for Log4ShellJndiDetector {
     fn meta(&self) -> &ModuleMeta { &self.meta }
     fn evaluate(&self, s: &Signal) -> Result<ModuleVerdict> {
-        if !s.kind.starts_with("net.http") { return Ok(ModuleVerdict::Ignore); }
+        // Accept both HTTP-layer signals (from user-space sources) and XDP-layer
+        // signals tagged by the kernel program with kind="log4shell.jndi".
+        let is_xdp = s.kind.starts_with("log4shell.");
+        if !(s.kind.starts_with("net.http") || is_xdp) { return Ok(ModuleVerdict::Ignore); }
+        // For XDP signals the kernel already matched — trust it strongly.
+        if is_xdp {
+            return Ok(ModuleVerdict::Report {
+                note: format!("Log4Shell JNDI (kernel-XDP detection) from {:?}", s.actor),
+                confidence: self.meta.limits.humble(s.raw_confidence.max(0.92)),
+            });
+        }
         let Some(text) = s.data.get("text").and_then(|v| v.as_str()) else {
             return Ok(ModuleVerdict::Ignore);
         };

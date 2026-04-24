@@ -41,6 +41,13 @@ impl Default for EternalBlueProbeDetector {
 impl Module for EternalBlueProbeDetector {
     fn meta(&self) -> &ModuleMeta { &self.meta }
     fn evaluate(&self, s: &Signal) -> Result<ModuleVerdict> {
+        // XDP fast path: kernel already matched SMB1 magic + dst 445.
+        if s.kind.starts_with("smb.ms17_010") {
+            return Ok(ModuleVerdict::Report {
+                note: format!("EternalBlue probe (kernel-XDP detection) from {:?}", s.actor),
+                confidence: self.meta.limits.humble(s.raw_confidence.max(0.90)),
+            });
+        }
         if !s.kind.starts_with("net.smb.segment") { return Ok(ModuleVerdict::Ignore); }
         let Some(hex) = s.data.get("bytes_hex").and_then(|v| v.as_str()) else {
             return Ok(ModuleVerdict::Ignore);

@@ -19,8 +19,9 @@ chrono      = { workspace = true }
 libc = "0.2"
 
 [features]
-default = []
+default      = ["std_helpers"]
+std_helpers  = []   # user-space conveniences (Ipv4Addr ctors, ...)
 # Enable real eBPF program attachment (requires CAP_BPF + kernel headers).
-ebpf    = []
+ebpf         = []
 # Enable nfqueue/netfilter integration.
-nf      = []
+nf           = []

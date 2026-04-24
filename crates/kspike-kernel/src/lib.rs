@@ -21,8 +21,13 @@ pub mod tap;
 pub mod packet;
 pub mod canary;
 pub mod inspect;
+pub mod xdp_event;
 
 pub use tap::{KernelTap, TapError, TapStatus};
 pub use packet::{PacketView, PacketTap, Protocol, FlowKey};
 pub use canary::{MemoryCanary, CanaryToken};
 pub use inspect::{bytes_contain, hex_signature_match, utf16_contains};
+pub use xdp_event::{
+    XdpSignalEvent, XdpDebugEvent, decode_signal, decode_debug, fnv1a64, kind_str,
+    IP_BYTES, KIND_BYTES, ACTOR_BYTES, af, threat,
+};

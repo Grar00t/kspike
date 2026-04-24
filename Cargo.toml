@@ -6,7 +6,14 @@ members = [
     "crates/kspike-kernel",
     "crates/kspike-judge",
     "crates/kspike-modules",
+    "crates/kspike-xdp-burp",
     "crates/kspike-cli",
+]
+# The eBPF sub-crate under kspike-xdp-burp/bpf is built with a DIFFERENT
+# target (bpfel-unknown-none) and its own toolchain file. Exclude it from
+# the host workspace — it's invoked explicitly via its own `cargo build`.
+exclude = [
+    "crates/kspike-xdp-burp/bpf",
 ]
 
 [workspace.package]

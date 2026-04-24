@@ -30,6 +30,34 @@ Part of the [gratech.sa](https://gratech.sa) sovereign stack.
 
 ---
 
+## What's new in v0.3 — Kernel-Native MITM
+
+KSpike now ships a **transparent XDP + eBPF interceptor** (`kspike-xdp-burp`)
+that sits at the earliest point in the Linux receive path and feeds the
+Engine at wire speed. Think: **Burp Suite, but in the kernel, but defensive.**
+
+- 📡 XDP program (Rust + aya) parses L2→L4 for IPv4 and IPv6
+- 🧬 Three in-kernel detectors: Log4Shell JNDI, Meterpreter beacon, EternalBlue probe
+- 📦 RingBuf (threats → Engine) + PerfEventArray (flow telemetry → logs)
+- 🎯 XDP_REDIRECT pathway for `striker.net.meterpreter_sinkhole`
+- 🧪 Ships with a pcap-replay harness — works without CAP_BPF / kernel headers
+
+See [docs/design/XDP-BURP.md](./docs/design/XDP-BURP.md) for build recipe,
+Secure Boot notes, and the sinkhole wiring protocol.
+
+```bash
+# Exercise the full kernel→user pipeline in replay mode (any host):
+cargo build --release -p kspike-xdp-burp
+./target/release/kspike-xdp-burp
+
+# Real kernel attach (Linux + CAP_BPF + kernel headers):
+cd crates/kspike-xdp-burp/bpf && cargo +nightly build --release \
+    --target bpfel-unknown-none -Z build-std=core
+sudo ./target/release/kspike-xdp-burp --interface eth0
+```
+
+---
+
 ## Architecture
 
 ```

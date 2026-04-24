@@ -1,0 +1,43 @@
+[package]
+name        = "kspike-xdp-burp"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "Kernel-native transparent MITM for KSpike: XDP + eBPF Burp-style interceptor feeding the Engine"
+
+[[bin]]
+name = "kspike-xdp-burp"
+path = "src/main.rs"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+kspike-core    = { path = "../kspike-core" }
+kspike-kernel  = { path = "../kspike-kernel" }
+kspike-judge   = { path = "../kspike-judge" }
+kspike-modules = { path = "../kspike-modules", features = ["all"] }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+anyhow     = { workspace = true }
+thiserror  = { workspace = true }
+tracing    = { workspace = true }
+tracing-subscriber = { workspace = true }
+chrono     = { workspace = true }
+
+# Real kernel attachment is gated; without it, we provide a pcap-replay
+# harness so the whole pipeline is testable without CAP_BPF / kernel headers.
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[dependencies.tokio]
+version  = "1"
+features = ["rt-multi-thread", "macros", "signal", "sync", "time"]
+
+[features]
+default = []
+# `aya` pulls in kernel headers + BTF; only turn on when building for a real
+# host with CAP_BPF. Off by default so `cargo build` works in any sandbox.
+aya_runtime = []

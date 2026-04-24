@@ -16,7 +16,6 @@
 //! evidence — judge-gated.
 
 use kspike_core::prelude::*;
-use kspike_kernel::inspect::hex_signature_match;
 
 pub struct MeterpreterBeaconDetector { meta: ModuleMeta }
 
@@ -46,7 +45,17 @@ impl Default for MeterpreterBeaconDetector {
 impl Module for MeterpreterBeaconDetector {
     fn meta(&self) -> &ModuleMeta { &self.meta }
     fn evaluate(&self, s: &Signal) -> Result<ModuleVerdict> {
-        if !s.kind.starts_with("net.flow.summary") { return Ok(ModuleVerdict::Ignore); }
+        // Accept both flow-summary signals (user-space) and XDP kernel tags.
+        let is_xdp = s.kind.starts_with("meterpreter.");
+        if !(s.kind.starts_with("net.flow.summary") || is_xdp) {
+            return Ok(ModuleVerdict::Ignore);
+        }
+        if is_xdp {
+            return Ok(ModuleVerdict::Report {
+                note: format!("Meterpreter beacon (kernel-XDP detection) from {:?}", s.actor),
+                confidence: self.meta.limits.humble(s.raw_confidence.max(0.85)),
+            });
+        }
         let len_prefix = s.data.get("len_prefix_match").and_then(|v| v.as_bool()).unwrap_or(false);
         let cbc_blocks = s.data.get("sizes_mod16_zero_ratio").and_then(|v| v.as_f64()).unwrap_or(0.0);
         let m_gif_uri  = s.data.get("uri").and_then(|v| v.as_str())
