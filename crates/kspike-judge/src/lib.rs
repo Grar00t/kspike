@@ -15,9 +15,29 @@
 //! engine (`StaticJudge`). A `CasperJudge` delegates final adjudication to
 //! the Casper Engine for contextual reasoning. Both write every ruling to
 //! the evidence ledger. There are no silent denials and no silent approvals.
+//!
+//! ## Multi-Layer Architecture
+//!
+//! The judge system now supports a 5-layer pipeline:
+//!
+//!   1. **rule_parser**: Operator-editable rules (NRULE format)
+//!   2. **constraint_solver**: Linear constraint feasibility check
+//!   3. **hybrid_reasoner**: Knowledge-base query resolution
+//!   4. **khz_judge**: KHZ-Q balance (Φ threshold)
+//!   5. **proof_generator**: Cryptographic audit trail (SHA-256)
 
 pub mod roe;
 pub mod judge;
+pub mod rule_parser;
+pub mod constraint_solver;
+pub mod hybrid_reasoner;
+pub mod proof_generator;
+pub mod multi_layer_judge;
 
 pub use judge::{Judge, JudgeRuling, RulingContext, StaticJudge, ManualJudge, KhzJudge};
 pub use roe::{Roe, StrikeConditions, RoeConfig};
+pub use rule_parser::{RuleParser, Rule, RulePattern, RuleDecision, RuleContext};
+pub use constraint_solver::{ConstraintSolver, ConstraintContext, ConstraintSystem};
+pub use hybrid_reasoner::{HybridReasoner, KnowledgeBase, QueryResult};
+pub use proof_generator::{ProofGenerator, ProofRecord, AuditTrail};
+pub use multi_layer_judge::{MultiLayerJudge, MultiLayerEvaluation};
