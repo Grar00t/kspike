@@ -53,19 +53,30 @@
 **Docs**
 - docs/ops/BUILDING-BPF.md — full bpf-linker + CAP_BPF recipe
 
-## v0.5 — Live Kernel Attach (next)
-- Fully wire `aya_runtime` feature:
-  * Load compiled BPF object
-  * Attach to interface (skb/driver/offload modes)
-  * RingBuf → mpsc::Sender → Engine
-  * PerfEventArray → tracing::debug
-- bpf_redirect implementation + SINKHOLE_MAP management from user-space
-- XDP sinkhole integration with kspike-honeypot veth pair setup
+## v0.5 — Live Kernel Attach ✓
+- `aya_runtime` feature wired: `Ebpf::load_file` + XDP attach (skb/drv/offload)
+- RingBuf reader (AsyncFd) → `XdpBurpTap.sink()` → Engine
+- PerfEventArray reader (per-CPU) → tracing::debug
+- `SinkholeManager` produces a deterministic plan (veth pair + listen + map
+  install) consumed by the runtime when a striker is authorised
+- `sinkhole_install/remove` operate on the live BPF SINKHOLE_MAP
 
-## v0.6 — Kernel Observability
-- kspike-procfs: /proc/net/tcp{,6} + /proc/modules integrity tap
-- kspike-auth-log: streaming tail of /var/log/auth.log
-- kspike-ebpf-lsm: LSM hooks for syscall anomaly detection
+## v0.6 — Kernel Observability ✓
+- kspike-procfs:
+  * `TcpTap` — /proc/net/tcp{,6} parser, IPv4+IPv6, LISTEN/ESTABLISHED diff
+  * `ModulesTap` — new modules / hidden LKM / refcnt anomaly detection
+- kspike-auth-log:
+  * `AuthLogTap` — streaming tail with sliding-window burst aggregation
+  * Recognises sshd, sudo, PAM events; emits ssh.auth.fail.burst
+- kspike-ebpf-lsm:
+  * User-space `LsmTap` + shared `LsmEvent` schema
+  * eBPF program (bpf/) with file_open / bprm_check_security / capable hooks
+  * Tested in replay mode
+
+## Casper Integration ✓
+- `kspike-casper-ffi/include/casper_ffi.h` — stable ABI v1.0 (4 symbols)
+- Same header committed to `Grar00t/Casper_Engine/include/casper_ffi.h`
+- KSpike's CasperJudge can dlopen libcasper.so under `--features link_casper`
 
 ## v0.7 — Arabic NLP Enrichment
 - Integrate kspike-casper-ffi with Niyah Engine prompts

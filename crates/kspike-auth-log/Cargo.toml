@@ -1,0 +1,16 @@
+[package]
+name        = "kspike-auth-log"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "KSpike auth.log streaming tap — sshd, sudo, PAM events"
+
+[dependencies]
+kspike-core   = { path = "../kspike-core" }
+kspike-kernel = { path = "../kspike-kernel" }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+anyhow     = { workspace = true }
+tracing    = { workspace = true }
+chrono     = { workspace = true }

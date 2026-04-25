@@ -25,3 +25,9 @@ tracing            = { workspace = true }
 tracing-subscriber = { workspace = true }
 serde_json         = { workspace = true }
 chrono             = { workspace = true }
+
+[dev-dependencies]
+kspike-procfs   = { path = "../kspike-procfs" }
+kspike-auth-log = { path = "../kspike-auth-log" }
+kspike-ebpf-lsm = { path = "../kspike-ebpf-lsm" }
+kspike-kernel   = { path = "../kspike-kernel" }

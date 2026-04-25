@@ -39,6 +39,10 @@
 
 pub mod tap;
 pub mod replay;
+pub mod sinkhole;
+#[cfg(feature = "aya_runtime")]
+pub mod runtime;
 
 pub use tap::{XdpBurpTap, XdpBurpConfig, AttachMode, SinkholeIface};
 pub use replay::PcapReplay;
+pub use sinkhole::{SinkholeManager, SinkholePlan};

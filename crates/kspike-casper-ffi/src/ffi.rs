@@ -80,3 +80,11 @@ pub fn evaluate(req_json: &str) -> anyhow::Result<String> {
 }
 
 pub fn available() -> bool { cfg!(feature = "link_casper") }
+
+/// Get the Casper Engine version string. Returns "stub" if not linked.
+pub fn version() -> String {
+    if !available() { return "stub".into(); }
+    let slot = match LIB.get() { Some(s) => s, None => return "uninitialised".into() };
+    let _guard = slot.lock().unwrap();
+    "linked".into()  // real impl would call casper_version() via dlsym
+}

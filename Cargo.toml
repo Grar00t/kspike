@@ -10,6 +10,9 @@ members = [
     "crates/kspike-honeypot",
     "crates/kspike-casper-ffi",
     "crates/kspike-kforge",
+    "crates/kspike-procfs",
+    "crates/kspike-auth-log",
+    "crates/kspike-ebpf-lsm",
     "crates/kspike-daemon",
     "crates/kspike-tui",
     "crates/kspike-cli",
@@ -19,6 +22,7 @@ members = [
 # the host workspace — it's invoked explicitly via its own `cargo build`.
 exclude = [
     "crates/kspike-xdp-burp/bpf",
+    "crates/kspike-ebpf-lsm/bpf",
 ]
 
 [workspace.package]

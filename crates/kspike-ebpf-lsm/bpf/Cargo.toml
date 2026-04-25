@@ -1,0 +1,31 @@
+[package]
+name        = "kspike-ebpf-lsm-bpf"
+version     = "0.1.0"
+edition     = "2021"
+license     = "Casper-Sovereign-1.0"
+description = "eBPF LSM program: file_open, bprm_check_security, capable hooks"
+publish     = false
+
+[[bin]]
+name = "kspike-ebpf-lsm-bpf"
+path = "src/main.rs"
+
+[dependencies]
+aya-ebpf      = { version = "0.1", default-features = false }
+aya-log-ebpf  = { version = "0.1", default-features = false }
+
+[profile.dev]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = "abort"
+incremental = false
+codegen-units = 1
+rpath = false
+
+[profile.release]
+lto = true
+panic = "abort"
+codegen-units = 1

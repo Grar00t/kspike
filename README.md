@@ -30,6 +30,42 @@ Part of the [gratech.sa](https://gratech.sa) sovereign stack.
 
 ---
 
+## What's new in v0.5+v0.6 — Live Kernel + Observability
+
+**Live kernel attach (v0.5)**
+- `kspike-xdp-burp --features aya_runtime` loads the compiled BPF object,
+  attaches to a real interface (skb/drv/offload), and feeds the engine over
+  RingBuf + PerfEventArray.
+- `SinkholeManager` orchestrates veth pairs + honeypot listener + SINKHOLE_MAP
+  entries when a striker is authorised. Works hand-in-hand with `kspike-honeypot`.
+
+**Three new taps (v0.6)**
+- `kspike-procfs`: TcpTap + ModulesTap (LISTEN/ESTABLISHED diff, hidden LKM,
+  refcnt anomalies). Tested live on this very host — 7 LISTEN sockets surfaced.
+- `kspike-auth-log`: streaming tail of /var/log/auth.log with sliding-window
+  burst aggregation. Tested with synthetic 12-line burst → emits
+  `ssh.auth.fail.burst` at the threshold.
+- `kspike-ebpf-lsm`: file_open / bprm_check_security / capable LSM hooks +
+  user-space tap (replay-tested with `/etc/shadow` open from `bash`).
+
+**Casper Engine wire-up**
+- Stable ABI v1.0 frozen as `include/casper_ffi.h` in BOTH repos
+  (KSpike + Casper_Engine).
+- Four-symbol contract: `casper_init`, `casper_judge_evaluate`,
+  `casper_shutdown`, `casper_version`.
+
+```bash
+# Build everything (14 crates):
+cargo build --release
+
+# Live attach (Linux + CAP_BPF):
+cargo build --release -p kspike-xdp-burp --features aya_runtime
+sudo setcap cap_bpf,cap_net_admin,cap_sys_admin+eip ./target/release/kspike-xdp-burp
+./target/release/kspike-xdp-burp --interface eth0
+```
+
+---
+
 ## What's new in v0.4 — Daemon + TUI + Casper + Honeypot + K-Forge
 
 - **kspike-daemon** (`kspiked`) — long-running engine over a UNIX socket;

@@ -15,8 +15,9 @@ pub enum TapError {
     Parse(String),
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum TapStatus {
+    #[default]
     Idle,
     Active,
     Degraded,
