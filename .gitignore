@@ -6,3 +6,7 @@ kspike-evidence.jsonl
 *.log
 .idea/
 .vscode/
+
+# Built C stub artifacts
+crates/kspike-casper-ffi/stub/libcasper.so
+crates/kspike-casper-ffi/stub/libcasper.dylib

@@ -46,13 +46,28 @@ impl KernelTap for LsmTap {
 pub fn event_to_signal(ev: &LsmEvent) -> Signal {
     let comm = cstr(&ev.comm);
     let path = cstr(&ev.path);
-    let (kind, threat, conf) = match ev.hook {
-        1 => ("lsm.file_open",            ThreatLevel::Suspicious, 0.40),
-        2 => ("lsm.bprm.suspicious",      ThreatLevel::Suspicious, 0.55),
-        3 => ("lsm.capable.cap_sys_module", ThreatLevel::Hostile,  0.85),
-        _ => ("lsm.unknown",              ThreatLevel::Unknown,    0.20),
+    // For hook==3 (capable), the kind depends on which capability fired.
+    let cap_name = cap_to_name(ev.cap);
+    let (kind_str, threat, conf): (String, ThreatLevel, f32) = match ev.hook {
+        1 => {
+            // file_open severity grows with target sensitivity
+            let p = path.as_str();
+            let sensitive = p.contains("/etc/shadow") || p.contains("/etc/sudoers")
+                         || p.contains("/.ssh/id_") || p.contains("/proc/kcore");
+            if sensitive {
+                ("lsm.file_open.sensitive".into(), ThreatLevel::Suspicious, 0.70)
+            } else {
+                ("lsm.file_open".into(), ThreatLevel::Unknown, 0.30)
+            }
+        }
+        2 => ("lsm.bprm.exec".into(), ThreatLevel::Suspicious, 0.45),
+        3 => (format!("lsm.capable.{cap_name}"),
+              if matches!(ev.cap, 16 | 17 | 39) { ThreatLevel::Hostile } else { ThreatLevel::Suspicious },
+              if matches!(ev.cap, 16) { 0.85 } else if matches!(ev.cap, 17 | 39) { 0.75 } else { 0.55 }),
+        _ => ("lsm.unknown".into(), ThreatLevel::Unknown, 0.20),
     };
-    Signal::new(SignalSource::Kernel, kind)
+    let kind: &str = kind_str.as_str();
+    Signal::new(SignalSource::Kernel, kind.to_string())
         .actor(format!("pid={} comm={comm}", ev.pid))
         .target(path.clone())
         .threat(threat)
@@ -68,4 +83,17 @@ pub fn event_to_signal(ev: &LsmEvent) -> Signal {
 fn cstr(b: &[u8]) -> String {
     let end = b.iter().position(|&c| c == 0).unwrap_or(b.len());
     String::from_utf8_lossy(&b[..end]).into_owned()
+}
+
+/// Linux capability number → readable name (subset relevant to KSpike).
+fn cap_to_name(cap: u32) -> &'static str {
+    match cap {
+        12 => "net_admin",
+        16 => "cap_sys_module",
+        17 => "sys_rawio",
+        19 => "sys_ptrace",
+        21 => "sys_admin",
+        39 => "cap_bpf",
+        _  => "other",
+    }
 }
