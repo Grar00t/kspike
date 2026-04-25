@@ -52,7 +52,7 @@ clap       = { version = "4", features = ["derive"] }
 chrono     = { version = "0.4", features = ["serde"] }
 blake3     = "1"
 ed25519-dalek = { version = "2", features = ["rand_core"] }
-rand       = "0.8"
+rand       = "0.10"
 uuid       = { version = "1", features = ["v4", "serde"] }
 
 [profile.release]
