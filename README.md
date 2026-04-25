@@ -153,6 +153,17 @@ sudo ./target/release/kspike-xdp-burp --interface eth0
 
 ---
 
+## Documentation
+
+- **[Judge Pipeline](./docs/architecture/judge_pipeline.md)** — canonical reference: how a kernel observation becomes a sealed action (Mermaid + ASCII + worked example).
+- [Architecture](./docs/design/ARCHITECTURE.md) — layered design.
+- [XDP-Burp](./docs/design/XDP-BURP.md) — kernel-native MITM internals.
+- [Building eBPF](./docs/ops/BUILDING-BPF.md) — bpf-linker recipe.
+- [ROE Charter](./docs/roe/ROE-CHARTER.md) — the four-condition charter.
+- [Roadmap](./ROADMAP.md) — v0.1 → v1.0 retro + v1.1+ plan.
+
+---
+
 ## Architecture
 
 ```
