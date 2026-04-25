@@ -27,6 +27,11 @@ serde_json         = { workspace = true }
 chrono             = { workspace = true }
 
 [dev-dependencies]
+kspike-niyah   = { path = "../kspike-niyah" }
+kspike-kforge  = { path = "../kspike-kforge" }
+kspike-haven   = { path = "../kspike-haven" }
+kspike-windows = { path = "../kspike-windows" }
+
 kspike-procfs   = { path = "../kspike-procfs" }
 kspike-auth-log = { path = "../kspike-auth-log" }
 kspike-ebpf-lsm = { path = "../kspike-ebpf-lsm" }

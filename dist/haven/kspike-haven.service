@@ -1,0 +1,40 @@
+[Unit]
+Description=KSpike on HAVEN OS — sovereign defense engine
+Documentation=https://github.com/Grar00t/kspike
+After=phalanx-init.service
+Before=network-online.target
+Wants=phalanx-init.service
+RequiresMountsFor=/var/lib/kspike
+
+[Service]
+Type=notify
+ExecStartPre=/usr/local/bin/kspike-haven-bootstrap /etc/kspike/manifest.toml
+ExecStart=/usr/local/bin/kspiked --socket /run/kspike.sock --ledger /var/lib/kspike/ledger.jsonl
+Restart=always
+RestartSec=2s
+
+User=kspike
+Group=kspike
+AmbientCapabilities=CAP_BPF CAP_NET_ADMIN CAP_SYS_ADMIN CAP_PERFMON
+CapabilityBoundingSet=CAP_BPF CAP_NET_ADMIN CAP_SYS_ADMIN CAP_PERFMON
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+RuntimeDirectory=kspike
+RuntimeDirectoryMode=0700
+StateDirectory=kspike
+StateDirectoryMode=0700
+LogsDirectory=kspike
+LogsDirectoryMode=0700
+MemoryDenyWriteExecute=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service @network-io
+SystemCallFilter=~@privileged @resources
+
+# Phalanx Protocol bus
+ReadWritePaths=/run/phalanx.bus /run/haven-fw.bus
+
+[Install]
+WantedBy=multi-user.target haven.target

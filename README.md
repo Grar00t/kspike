@@ -30,6 +30,35 @@ Part of the [gratech.sa](https://gratech.sa) sovereign stack.
 
 ---
 
+## What's new in v0.7 → v1.0 — Niyah, Federation, Windows, HAVEN
+
+KSpike is now feature-complete through v1.0 — **17 crates**, all building.
+
+- **kspike-niyah** — Arabic-first explanations of every Judge ruling.
+  Every defense and strike is rendered into a Charter-anchored paragraph
+  in العربية النجدية الفصحى, English, or both.
+- **kspike-kforge production** — file-backed peer discovery, append-only
+  signed key log with attestation, and per-peer token-bucket back-pressure.
+- **kspike-windows** — WFP mirror types + ETW provider scaffold + WSL2
+  bridge ingester. Cross-compiles cleanly on any host.
+- **kspike-haven** — BootManifest schema, Phalanx Protocol bus contract,
+  service unit that boots BEFORE network-online.target so the engine is
+  alive before any external packet reaches userland.
+- **GitHub Actions CI** — minimal-permissions workflows that run on a fresh
+  fork without enabling extra permissions.
+
+Live smoke test of all eight v1.0 surfaces: `cargo run --release --example test_v1_full`.
+
+```
+╔═════════════════════════════════════╗
+  القرار: تنفيذ طلب ضربة «dnat_to_honeypot» تجاه 198.51.100.99
+  أصدر مهاجم «striker.net.meterpreter_sinkhole» قراراً...
+  المبادئ المُسْتنَدة: الإنسان أولاً، الصدق، العدل، الشجاعة، السرية
+╚═════════════════════════════════════╝
+```
+
+---
+
 ## What's new in v0.5+v0.6 — Live Kernel + Observability
 
 **Live kernel attach (v0.5)**

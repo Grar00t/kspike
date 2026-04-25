@@ -1,0 +1,19 @@
+[package]
+name        = "kspike-haven"
+version.workspace     = true
+edition.workspace     = true
+rust-version.workspace = true
+license.workspace     = true
+description = "HAVEN OS integration: service contract, Phalanx Protocol hooks, boot manifest"
+
+[dependencies]
+kspike-core   = { path = "../kspike-core" }
+kspike-judge  = { path = "../kspike-judge" }
+kspike-niyah  = { path = "../kspike-niyah" }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+toml       = { workspace = true }
+anyhow     = { workspace = true }
+tracing    = { workspace = true }
+chrono     = { workspace = true }

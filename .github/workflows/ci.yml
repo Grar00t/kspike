@@ -1,0 +1,68 @@
+name: ci
+
+# Minimal permissions — no write access, no secrets, no GITHUB_TOKEN escalation.
+# Should run on any fresh fork without enabling Actions extra permissions.
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # Add later: macos-latest (Linux-only crates auto-skip via cfg)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kspike-${{ matrix.os }}
+
+      - name: cargo build (host workspace, no eBPF sub-crates)
+        run: cargo build --release --workspace --locked
+        continue-on-error: false
+
+      - name: cargo test (host workspace)
+        run: cargo test --release --workspace --locked
+        continue-on-error: false
+
+  fmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+        continue-on-error: true     # advisory only; doesn't fail PRs early
+
+  clippy:
+    name: clippy (advisory)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: kspike-clippy
+      - run: cargo clippy --release --workspace --all-targets -- -D warnings
+        continue-on-error: true     # advisory until we clean up

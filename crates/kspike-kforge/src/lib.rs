@@ -16,7 +16,13 @@
 pub mod frame;
 pub mod peer;
 pub mod merge;
+pub mod discovery;
+pub mod keylog;
+pub mod backpressure;
 
 pub use frame::{Frame, Advert, FetchReq, Segment};
 pub use peer::{Peer, PeerList};
 pub use merge::{merge_segment, VerifyOutcome};
+pub use discovery::{load_peers, save_peers};
+pub use keylog::{KeyLog, KeyLogEntry};
+pub use backpressure::TokenBucket;

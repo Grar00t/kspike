@@ -78,23 +78,48 @@
 - Same header committed to `Grar00t/Casper_Engine/include/casper_ffi.h`
 - KSpike's CasperJudge can dlopen libcasper.so under `--features link_casper`
 
-## v0.7 — Arabic NLP Enrichment
-- Integrate kspike-casper-ffi with Niyah Engine prompts
-- Arabic ROE explanations in ledger
-- Natural-language signal provenance for non-technical operators
+## v0.7 — Arabic NLP Enrichment ✓
+- `kspike-niyah` crate — Explainer + templates + LedgerView
+- Arabic (Najdi-flavoured) + English + Bilingual locales
+- Charter-anchored prose; never invents facts the Judge didn't commit
+- Falls back deterministically when Casper FFI is absent
 
-## v0.8 — K-Forge Production
-- mDNS peer discovery
-- Gossip throttling + back-pressure
-- Cross-peer canary sharing (with consent)
-- Community IOC feed format
+## v0.8 — K-Forge Production ✓
+- `discovery.rs` — file-backed peers + mDNS-ready API
+- `keylog.rs` — append-only signed key log; `is_attested_by` gate
+- `backpressure.rs` — per-peer token bucket (live-tested)
 
-## v0.9 — Windows/WSL2 Bridge
-- Windows kernel driver that mirrors XDP semantics via WFP
-- ETW providers for Windows-side signals
-- PS-remoting over the kspiked IPC
+## v0.9 — Windows/WSL2 Bridge ✓
+- `kspike-windows` crate (cross-compiles on any host)
+- `WfpMirror` + WFP layer/direction/action types
+- `EtwProvider` formatter for Gratech-KSpike events
+- `wsl_bridge_signal` — turns Windows-side payloads into kspike Signals
 
-## v1.0 — HAVEN OS Integration
-- Boots as a first-class service on khawrizm-os
-- Phalanx Protocol integration
-- Niyah Engine as the default `CasperJudge` backend
+## v1.0 — HAVEN OS Integration ✓
+- `kspike-haven` crate — BootManifest, Phalanx bus, bootstrap()
+- `dist/haven/manifest.toml` — operator-facing config schema
+- `dist/haven/kspike-haven.service` — boot order before network-online
+- Phalanx topics: ioc.add, strike.authorised, evidence.sealed, roe.amendment
+- ServiceMode: Audit | Defensive | DefensiveWithStrike
+- NetworkPosture: DenyByDefault | DefenseInDepth | Federation
+
+## CI ✓
+- `.github/workflows/ci.yml` — minimal-permissions build + test + clippy
+- `.github/workflows/ebpf.yml` — nightly + bpfel target (advisory)
+- `.github/dependabot.yml` — weekly cargo + monthly actions
+
+---
+
+# Future
+
+## v1.1 — Hardware-Backed Signing
+- TPM 2.0 / fTPM-sealed signing keys for the evidence ledger
+- Signed-boot attestation for the entire KSpike stack
+
+## v1.2 — Federated Threat Intel
+- Peer-to-peer IOC exchange across opt-in HAVEN nodes
+- Reputation system rooted in the K-Forge key log
+
+## v2.0 — KSpike for Embedded
+- ARM Cortex-M / RISC-V build profile
+- Stripped-down engine for IoT defense

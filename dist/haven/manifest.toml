@@ -1,0 +1,26 @@
+# /etc/kspike/manifest.toml — HAVEN OS boot manifest for KSpike v1.0
+#
+# This file is read by `kspike-haven::bootstrap()` from the HAVEN init.
+# Operator-editable; every change is sealed into the evidence ledger as
+# a `roe.amendment` event the next time kspiked starts.
+
+version  = "1.0"
+operator = "sulaiman@gratech.sa"
+
+# audit | defensive | defensive_with_strike
+service_mode = "defensive_with_strike"
+
+# deny_by_default | defense_in_depth | federation
+network_posture = "defense_in_depth"
+
+interfaces  = ["eth0", "wlan0"]
+
+roe_path    = "/etc/kspike/roe.toml"
+ledger_path = "/var/lib/kspike/ledger.jsonl"
+
+niyah_locale = "ar"
+
+phalanx_peers = [
+    "unix:///run/phalanx.bus",
+    "unix:///run/haven-fw.bus",
+]
